@@ -5,11 +5,11 @@ repairs it to a fixpoint.
 
 A content-bearing bug is one where the code **runs**, **returns a number**, and the
 **number is wrong**. No crash, no exception, no stack trace. Nothing in a traceback
-finds it, because nothing went wrong at the language level — the answer is just
-not the answer.
+finds it, because nothing went wrong at the language level — the answer is just not
+the answer.
 
-Every expression here was authored by a synthesis engine in **0.35 seconds** total.
-None of it was written by hand.
+Every expression here was machine-authored by enumerative search over a bounded
+instruction set, in **0.35 seconds** total. None of it was written by hand.
 
 ```
   dispatch         256 states   0 wrong
@@ -40,10 +40,13 @@ LANE4(x)  (x & (1 << 3)) + (x & (1 << 3))
 LANE5(x)  ((x >> 2) << 5) - ((x >> 3) << 6)
 ```
 
-Slot 0 is the engine being sharper than the obvious. A hand-written version would
-mask — `1 & (x >> 7)`. The engine dropped the mask, because bit 7 is the top of the
-posed domain and the shift alone is already 0 or 1. One instruction, and the only
-one it proved minimal.
+`minimal in D∩I` is a proof that no shorter expression exists in the searched
+domain. `forced join` means exact, with minimality unproved.
+
+Slot 0 is the search being sharper than the obvious. A hand-written version would
+mask — `1 & (x >> 7)`. It dropped the mask, because bit 7 is the top of the posed
+domain and the shift alone is already 0 or 1. One instruction, and the only one
+proved minimal.
 
 ## The core it runs on
 
@@ -57,12 +60,12 @@ HALT(m)     (m - (m - 1)) + ((-m) >> 31)    /* nothing left */
 ```
 
 This is their sixth domain. The others: writing a token sequence, HTTP admission,
-the synthesis loop itself, candidate discovery, and bug classification. The
-dispatch has never been edited for any of them.
+a synthesis loop, candidate discovery, and bug classification. The dispatch has
+never been edited for any of them.
 
 `ADVANCE` is why this is a solver and not a classifier: it strictly reduces a live
-mask, which is what makes the repair loop terminate. The verifier checks that on
-all 256 states.
+mask, which is what makes the repair loop terminate. `verify.c` checks that on all
+256 states.
 
 ## Solving, not naming
 
@@ -77,8 +80,8 @@ harness that can actually tell a correct implementation from a wrong one.
 ## Results — 16 held-out jobs
 
 Every job is a **different instance** of the classes, in a **different domain**, and
-the law had never seen any of them. Every observation bit is **measured by running
-the job** — nothing is labelled by hand. The law never sees the truth column.
+the law had never seen any of them. Every observation bit was **measured by running
+the job** — nothing labelled by hand. The law never sees the truth column.
 
 ```
 job                          truth                    what the law did             outcome
@@ -102,7 +105,7 @@ starved material             NO SLOT: lean material   CLEAN, no repair          
 solved 13 of 16    abandoned 1    unsalvageable 1    false alarms on clean 0   [17.0 s]
 ```
 
-Three things in that table are worth more than the score.
+Three things there are worth more than the score.
 
 **It iterates.** `nibble 0..31 + xor harness` carries two independent faults. The
 law handles `TRUNCATED`, re-measures, finds `FOLDED` still live, handles that, and
@@ -114,9 +117,9 @@ never reaches it.
 
 **It disagreed with the labels twice and was right twice.** `half-flag posed
 0..127` was labelled truncated; the mask showed `DEGENERATE,TRUNCATED`, because
-posing only 0..127 makes the target all-zero — degenerate is the sharper
-diagnosis, and one widen cleared both. `x<<24 posed 0..127` was labelled a two-bug
-job; the mask was `00000` and that was correct: `127 << 24` does not overflow, and
+posing only 0..127 makes the target all-zero — degenerate is the sharper diagnosis,
+and one widen cleared both. `x<<24 posed 0..127` was labelled a two-bug job; the
+mask was `00000`, and that was correct: `127 << 24` does not overflow, and
 `(x << 24)` extrapolates to the full domain exactly.
 
 ## What it cannot do
@@ -133,8 +136,7 @@ Stated because it was measured, not because it is a caveat.
   It now `ABANDON`s. That is a **guard, not a diagnosis** — it says "not in this
   taxonomy", never what is actually wrong.
 - **Starved material still reads `CLEAN`.** No law is authored, so nothing false is
-  claimed, but the fault cannot be named. Closing it means supplying the engine's
-  own `starved` event as a seventh observation.
+  claimed, but the fault cannot be named.
 - **It finds nothing on its own.** It routes observations a body has already made.
   Deciding to check a result against an independent evaluator, or to verify outside
   the posed domain, is still the body's job. The brain names the class; the body
@@ -142,37 +144,31 @@ Stated because it was measured, not because it is a caveat.
 
 ## Run it
 
-No dependencies. Re-checks the dispatch exhaustively and replays every recorded
-step of all 16 jobs:
+No dependencies. Re-checks the dispatch exhaustively, replays every recorded step
+of all 16 jobs, proves the loop terminates, and times one decision:
 
 ```bash
 cc -O2 -o checklaws verify/verify.c && ./checklaws
 ```
 
-To re-author the laws from supply, or to re-run the 16 jobs, you need the synthesis
-engine, which is proprietary and **not in this repository**. Both scripts exit
-cleanly without it:
-
-```bash
-SPHERE_ENGINE=/path/to/engine python3 author/author.py
-SPHERE_ENGINE=/path/to/engine python3 solve/solve.py
-```
-
 ## Layout
 
 ```
-law/law.json        the six authored lanes, their verdicts, EMIT/ADVANCE/HALT
-author/author.py    re-authors every lane from supply alone
-solve/solve.py      the 16 held-out jobs, every observation measured by running
-traces/traces.json  the observation trace of each job, as recorded
+law/law.json        the six lanes, their verdicts, EMIT/ADVANCE/HALT
+traces/traces.json  the observation trace of each of the 16 jobs, as recorded
 verify/verify.c     generated, no dependencies
 verify/gen.py       generates verify.c from law.json and traces.json
-results/            captured output of both runs
+results/            captured output of the authoring and evaluation runs
 ```
 
 `verify.c` is generated, never hand-transcribed — copying six expressions and
 sixteen traces into another language by hand is the exact step that produces a
 verifier which checks the wrong thing.
+
+**Not included:** the search that authored the lanes, and the harness that ran the
+16 jobs. What is here is the artifact and its evidence — the laws, the recorded
+traces, the captured runs, and a verifier that re-derives every claim above from
+scratch with nothing but a C compiler.
 
 ## What was supplied and what was authored
 
@@ -180,3 +176,12 @@ verifier which checks the wrong thing.
 they must be handled in, and the repairs a body can perform.
 
 **Authored:** every expression in `law/law.json`, and every verdict beside it.
+
+## License
+
+[GNU Affero General Public License v3.0](LICENSE) or later.
+
+Copyright (C) 2026 devkancheti4-design.
+
+AGPL section 13 applies: if you run a modified version of this to offer a network
+service, you must offer its complete source to the users of that service.

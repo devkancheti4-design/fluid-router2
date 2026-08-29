@@ -8,12 +8,12 @@
   "(((x >> 2) << 5) - ((x >> 3) << 6))"
  ],
  "notes": [
-  "sphere: minimal in D\u2229I",
-  "sphere: forced +-join \u2014 exact, minimality not proved",
-  "sphere: forced --join \u2014 exact, minimality not proved",
-  "sphere: forced --join \u2014 exact, minimality not proved",
-  "sphere: forced +-join \u2014 exact, minimality not proved",
-  "sphere: forced --join \u2014 exact, minimality not proved"
+  "minimal in D\u2229I",
+  "forced +-join \u2014 exact, minimality not proved",
+  "forced --join \u2014 exact, minimality not proved",
+  "forced --join \u2014 exact, minimality not proved",
+  "forced +-join \u2014 exact, minimality not proved",
+  "forced --join \u2014 exact, minimality not proved"
  ],
  "bits": [
   7,
