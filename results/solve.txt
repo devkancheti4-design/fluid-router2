@@ -1,0 +1,24 @@
+====================================================================================================
+SIXTEEN HELD-OUT JOBS      the law never sees the truth column
+====================================================================================================
+  job                          truth                    what the law did             outcome
+  ------------------------------------------------------------------------------------------------
+  parity, posed even           DEGENERATE               DEGENERATE                   SOLVED
+  half-flag, posed 0..127      DEGENERATE+TRUNCATED     DEGENERATE                   SOLVED
+  nibble bit, posed 0..31      TRUNCATED                TRUNCATED                    SOLVED
+  x<<24 graded in python       EVALUATOR                EVALUATOR                    SOLVED
+  scramble, xor harness        FOLDED                   FOLDED                       SOLVED
+  predict x from x             CIRCULAR                 CIRCULAR                     DEAD
+  x<<24, posed 0..127          CLEAN                    CLEAN, no repair             SOLVED
+  nibble 0..31 + xor harness   TRUNCATED+FOLDED         TRUNCATED -> FOLDED          SOLVED
+  lowest set bit, clean        CLEAN                    CLEAN, no repair             SOLVED
+  complement, clean            CLEAN                    CLEAN, no repair             SOLVED
+  bit 3, clean                 CLEAN                    CLEAN, no repair             SOLVED
+  add one, clean               CLEAN                    CLEAN, no repair             SOLVED
+  flaky reference              NO SLOT: nondeterministi DEGENERATE -> NOPROGRESS     ABANDONED
+  starved material             NO SLOT: lean material   CLEAN, no repair             not solved
+  16-bit, clean                CLEAN                    CLEAN, no repair             SOLVED
+  16-bit, truncated            DEGENERATE+TRUNCATED     DEGENERATE                   SOLVED
+  ------------------------------------------------------------------------------------------------
+  solved 13 of 16    abandoned 1    unsalvageable 1    false alarms on clean 0   [17.0 s]
+  observation traces written to traces/traces.json

@@ -1,0 +1,55 @@
+{
+ "lanes": [
+  "(x >> 7)",
+  "((1 & (x >> 6)) + (1 & (x >> 6)))",
+  "(((x >> 5) << 2) - ((x >> 6) << 3))",
+  "(((x >> 4) << 3) - ((x >> 5) << 4))",
+  "((x & (1 << 3)) + (x & (1 << 3)))",
+  "(((x >> 2) << 5) - ((x >> 3) << 6))"
+ ],
+ "notes": [
+  "sphere: minimal in D\u2229I",
+  "sphere: forced +-join \u2014 exact, minimality not proved",
+  "sphere: forced --join \u2014 exact, minimality not proved",
+  "sphere: forced --join \u2014 exact, minimality not proved",
+  "sphere: forced +-join \u2014 exact, minimality not proved",
+  "sphere: forced --join \u2014 exact, minimality not proved"
+ ],
+ "bits": [
+  7,
+  6,
+  5,
+  4,
+  3,
+  2
+ ],
+ "names": [
+  "NOPROGRESS",
+  "DEGENERATE",
+  "TRUNCATED",
+  "EVALUATOR",
+  "FOLDED",
+  "CIRCULAR"
+ ],
+ "what": [
+  "the last repair did not move the mask",
+  "the posed targets take one value",
+  "exact on the posed domain, wrong on the real one",
+  "grader semantics differ from the machine on this data",
+  "the harness scores a right and a wrong implementation the same",
+  "the posed observation equals the target"
+ ],
+ "fix": [
+  "abandon: not in this taxonomy",
+  "widen the posed domain",
+  "span the real domain",
+  "grade at machine semantics",
+  "non-cancelling harness",
+  "drop the feature"
+ ],
+ "emit": "(x & (-x))",
+ "halt": "((x - (x - 1)) + ((-x) >> 31))",
+ "advance": "(x - (x & (-x)))",
+ "states_checked": 256,
+ "wrong": 0
+}

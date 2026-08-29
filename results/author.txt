@@ -1,0 +1,16 @@
+================================================================================================
+SIX LANES      supply is the six classes, their bits, and their order
+================================================================================================
+  slot class        authored by the engine                   ops  verdict
+  ------------------------------------------------------------------------------------------
+  0    NOPROGRESS   (x >> 7)                                   1  sphere: minimal in D∩I
+  1    DEGENERATE   ((1 & (x >> 6)) + (1 & (x >> 6)))          5  sphere: forced +-join — exact, minimality not proved
+  2    TRUNCATED    (((x >> 5) << 2) - ((x >> 6) << 3))        5  sphere: forced --join — exact, minimality not proved
+  3    EVALUATOR    (((x >> 4) << 3) - ((x >> 5) << 4))        5  sphere: forced --join — exact, minimality not proved
+  4    FOLDED       ((x & (1 << 3)) + (x & (1 << 3)))          5  sphere: forced +-join — exact, minimality not proved
+  5    CIRCULAR     (((x >> 2) << 5) - ((x >> 3) << 6))        5  sphere: forced --join — exact, minimality not proved
+  ------------------------------------------------------------------------------------------
+  [0.35 s]
+
+  dispatch over all 256 observation states: 0 wrong
+  written to law/law.json

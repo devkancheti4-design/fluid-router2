@@ -1,0 +1,191 @@
+[
+ {
+  "job": "parity, posed even",
+  "truth": "DEGENERATE",
+  "sigs": [
+   96,
+   0
+  ],
+  "steps": [
+   "DEGENERATE"
+  ],
+  "outcome": "SOLVED",
+  "law": "(x & 1)"
+ },
+ {
+  "job": "half-flag, posed 0..127",
+  "truth": "DEGENERATE+TRUNCATED",
+  "sigs": [
+   96,
+   0
+  ],
+  "steps": [
+   "DEGENERATE"
+  ],
+  "outcome": "SOLVED",
+  "law": "(x >> 7)"
+ },
+ {
+  "job": "nibble bit, posed 0..31",
+  "truth": "TRUNCATED",
+  "sigs": [
+   32,
+   0
+  ],
+  "steps": [
+   "TRUNCATED"
+  ],
+  "outcome": "SOLVED",
+  "law": "(1 & (x >> 4))"
+ },
+ {
+  "job": "x<<24 graded in python",
+  "truth": "EVALUATOR",
+  "sigs": [
+   16,
+   0
+  ],
+  "steps": [
+   "EVALUATOR"
+  ],
+  "outcome": "SOLVED",
+  "law": "(x << 24)"
+ },
+ {
+  "job": "scramble, xor harness",
+  "truth": "FOLDED",
+  "sigs": [
+   8,
+   0
+  ],
+  "steps": [
+   "FOLDED"
+  ],
+  "outcome": "SOLVED",
+  "law": "(x ^ 85)"
+ },
+ {
+  "job": "predict x from x",
+  "truth": "CIRCULAR",
+  "sigs": [
+   4
+  ],
+  "steps": [
+   "CIRCULAR"
+  ],
+  "outcome": "DEAD",
+  "law": "x"
+ },
+ {
+  "job": "x<<24, posed 0..127",
+  "truth": "CLEAN",
+  "sigs": [
+   0
+  ],
+  "steps": [],
+  "outcome": "SOLVED",
+  "law": "(x << 24)"
+ },
+ {
+  "job": "nibble 0..31 + xor harness",
+  "truth": "TRUNCATED+FOLDED",
+  "sigs": [
+   40,
+   8,
+   0
+  ],
+  "steps": [
+   "TRUNCATED",
+   "FOLDED"
+  ],
+  "outcome": "SOLVED",
+  "law": "(1 & (x >> 4))"
+ },
+ {
+  "job": "lowest set bit, clean",
+  "truth": "CLEAN",
+  "sigs": [
+   0
+  ],
+  "steps": [],
+  "outcome": "SOLVED",
+  "law": "((x & 127) ^ (x & (x + 127)))"
+ },
+ {
+  "job": "complement, clean",
+  "truth": "CLEAN",
+  "sigs": [
+   0
+  ],
+  "steps": [],
+  "outcome": "SOLVED",
+  "law": "(255 - x)"
+ },
+ {
+  "job": "bit 3, clean",
+  "truth": "CLEAN",
+  "sigs": [
+   0
+  ],
+  "steps": [],
+  "outcome": "SOLVED",
+  "law": "(1 & (x >> 3))"
+ },
+ {
+  "job": "add one, clean",
+  "truth": "CLEAN",
+  "sigs": [
+   0
+  ],
+  "steps": [],
+  "outcome": "SOLVED",
+  "law": "((x & 128) ^ (1 + (x & 127)))"
+ },
+ {
+  "job": "flaky reference",
+  "truth": "NO SLOT: nondeterministic",
+  "sigs": [
+   64,
+   192
+  ],
+  "steps": [
+   "DEGENERATE",
+   "NOPROGRESS"
+  ],
+  "outcome": "ABANDONED",
+  "law": "1"
+ },
+ {
+  "job": "starved material",
+  "truth": "NO SLOT: lean material",
+  "sigs": [
+   0
+  ],
+  "steps": [],
+  "outcome": "not solved",
+  "law": null
+ },
+ {
+  "job": "16-bit, clean",
+  "truth": "CLEAN",
+  "sigs": [
+   0
+  ],
+  "steps": [],
+  "outcome": "SOLVED",
+  "law": "(x >> 8)"
+ },
+ {
+  "job": "16-bit, truncated",
+  "truth": "DEGENERATE+TRUNCATED",
+  "sigs": [
+   96,
+   0
+  ],
+  "steps": [
+   "DEGENERATE"
+  ],
+  "outcome": "SOLVED",
+  "law": "(1 & (x >> 7))"
+ }
+]
